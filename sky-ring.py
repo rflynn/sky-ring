@@ -10,59 +10,76 @@
 # also, we are lacking weather data (i.e. solar magnitude due to clouds,etc.), so we
 # fake it. just follow the FIXME's
 
-import datetime
-import ephem # to install, run `easy_install pyephem`
-import cairo
-from math import pi,radians,sin,cos,sqrt
-import random # FIXME: just for naughty data-faking
+# http://www.reddit.com/r/pics/comments/bqa9y/the_path_of_the_sun_through_the_sky_over_the_last/c0o162g
+# edit: looks like Bellshill, Scotland. The 56th parallel, so that makes sense.
 
-filename = 'sky-ring'
+# Model/Assumptions:
+#  - left is due East, right is due West, horizon is 0° geometric, top is 90° geometric (i.e. straight up)
+#  - center of image at the horizon is due South
+
+# TODO's
+#  - size of sun is arbitrary, figure out how to use ephem's sun.size (and maybe sun.magnitude)
+#  - breaks in the sunlight (clouds) are psuedo-random to simulate real climate data. find some real climate data!
+
+import datetime, sys, random, re
+from math import pi,radians,sin,cos,sqrt
+import ephem, cairo
+
 height = 500.0
 width = 600.0
 
-horizon = 0
+horizon = height / 5
+
+if len(sys.argv) != 2:
+	print('Usage: %s location' % (sys.argv[0]))
+	print('  Location can be a city name ("New York") or a latitude,longitude pair (0:0,0:0)')
+	sys.exit()
+
+loc = sys.argv[1]
+print('Using location (%s)' % loc)
+filename = 'sky-ring-%s.jpg' % re.sub('\W','-',loc)
+print('Filename %s' % filename)
 
 surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, int(width), int(height))
 cr = cairo.Context(surface)
-# draw background
+# black background
 cr.set_source_rgba(0,0,0,1)
 cr.rectangle(0, 0, width, height)
 cr.fill()
 cr.stroke()
 
-#o = ephem.Observer()
-# Los Angeles, Calif. 34°3'N, 118°15'W
-#o.lat, o.long, o.date = '34:3', '-118:15', datetime.utcnow()
-# TODO: make this a parameter, or something
-o = ephem.city('New York')
+# create observer 'o' from parameter loc
+o = None
+if re.match('\d', loc): # lat/long
+	o = ephem.Observer()
+	o.lat, o.long = loc.split(',')
+else:
+	o = ephem.city(loc)
+
 sun = ephem.Sun()
 
 step = datetime.timedelta(minutes=1)
 now = datetime.datetime.now()
 year = now.year
 
+# start at the summer solstice
 when = datetime.datetime(now.year, 6, 21, 0, 0, 0)
 o.date = when
 sunrise = when
 
-# for each day in the year
-while when.year == year:
+while when.month < 12 or when.day <= 21: # ...through the winter solstice
 	# we have sunrise, now calculate sunset
 	o.date = when
 	s = o.next_setting(sun).tuple()
 	sunset = datetime.datetime(s[0],s[1],s[2],s[3],s[4],int(s[5]))
-	print('sunrise=%s sunset=%s' % (sunrise,sunset))
-
-	# calculate today's clouds
-	# TODO:
-
+	print('sunrise=%s sunset=%s' % (sunrise,sunset)) # show progress
 	# FIXME: fake overcast days
 	if random.random() > 0.8:
 		when += datetime.timedelta(days=1)
 		o.date = when
 	else:
 		# FIXME: fake clouds
-		cloudnext = when + (step * (random.randint(0,300)))
+		cloudnext = when + (step * (random.randint(0,200)))
 		cloudlen = random.randint(1,100)
 		while when < sunset:
 			if when == cloudnext:
@@ -71,20 +88,16 @@ while when.year == year:
 				cloudlen = 60 + random.randint(1,60)
 			o.date = when
 			sun = ephem.Sun(o)
-			# FIXME: assume northern hemisphere looking dead south
 			# translate sun position
-			x = width - (float(sun.az) / (1.5*pi) * width) # FIXME: 2*pi
-			x += width / 4 # FIXME: offset
+			x = width - (float(sun.az) / (2*pi) * width)
+			# horizon = 0°, top = 90° (pi/2 radians)
 			y0 = (float(sun.alt) / (pi/2))
-			# FIXME: exagerrate y value for style :/
-			y2 = -10 if y0 < 0 else y0**2*1.5
-			y = (height - horizon) - (y2 * (height - horizon))
+			y = (height - horizon) - (y0 * (height - horizon))
 			"""
-			print('date=%s az=%f alt=%f x=%f y=%f' % (o.date,float(sun.az),float(sun.alt),x,y))
-			print(' ra=%f dec=%f mag=%s size=%f radius=%s earth_distance=%f az=%s(%f) alt=%s(%f)' % \
-				(sun.ra, sun.dec, sun.mag, sun.size, sun.radius, sun.earth_distance, sun.az, float(sun.az), sun.alt, float(sun.alt)))
+			print('date=%s az=%f alt=%f x=%f y=%f mag=%s size=%s' % \
+				(o.date, float(sun.az), float(sun.alt), x, y, sun.mag, sun.size))
 			"""
-			# FIXME: set intensity of sun based on weather and position
+			# TODO: set intensity of sun based on weather and position
 			# c2f6eb
 			# FIXME: force lower intensity on the edges
 			cr.set_source_rgba(0.76, 0.964, 0.921, 0.3+(random.random()*0.2)-((abs(width/2-x))/width))
@@ -99,11 +112,11 @@ while when.year == year:
 	when = sunrise
 cr.stroke()
 
-# draw horizon
+# TODO: draw horizon/foreground
 
 # save
-surface.write_to_png(filename + '.jpg')
+surface.write_to_png(filename)
 surface.finish()
 
-print('done.')
+print('%s done.' % filename)
 
