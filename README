@@ -1,0 +1,49 @@
+
+                       ,     M     O                        
+                  M     O    $    ~M    D                   
+                   M   ,N    $   MO    O?                   
+             N8    NM   M+: ~=~  M+N  ,$     =              
+              MI   ,=+ ,+O  8=8 M+M   II   OI               
+         7     $7N  M+, I+M M=M D+M  8=   M7      M         
+          OD   7+D  ~=7 =7+MM=M M+I$N=M M++M    O=          
+           7=M  M++?M8=OM++MD=DI++MM=I:++$   :8O            
+     MO:    $?=8  Z++N==M++M?=?++MM==MM++? ,M=M     8M      
+      .?MMI   N=+MM++M8==M+Z===Z+M==+I++MOM==Z   =?MO       
+        .N+M~? N==DO++M===NM===M?===M++7M==+8 M+++M         
+  IM+     M7+++M8+===M+8MI=======IMMIIM===M8M++N       IM   
+     M==M7   M++ZM+==MD=============DM===M++++7=  OZ=N      
+        M===7MM?++IMM=================M+M++MOMN+==O+        
+          =M=====7MM===================MMD=====8=           
+   N+I+IM+++M?M+==N==7DNMZ======8??OM===N+=+M??MM$+++?M8M   
+      7$$MM+++++$M===7DZ7M+M==M?877+=====M$+++++++M ::      
+           ~ZMMMMM===?MMMDD++=ODMMMZ=====MMMMMI$M           
+MM$$$============M=========++=O==========N============$$$MM7
+          M$IMMMMM=========D==N+=========MMMMMZN            
+      : 7+++++++$M=========+?D===========M$+++++MMN$7       
+  O8M++++$MM??M+==N=======MNNNONM=======N+=+M?M+++MI+I+N    
+          =M=====7MM========$?+========MMD=====8=           
+       +M===NMDM++M+M=================MMI++?8M7===M         
+     M=ZM   7++++N===MD=============DM==+MZ++M   7M==M      
+  NI       M++M8M===DII8MI=======IMM+MI===8M++++M     +MD   
+        I+++M .+==M7I+M===NM===M?===M++OD==N ?~7+N,         
+      OM?=   Z==M,M++I+==M+Z===Z+M==8M++M?+=?   IMM?.       
+     D8     M=O, N++NM==MM++?=?M++M==NN+Z= 8??$    :OM      
+           M8:   M++ I=OM++ID=DM++MM=8D?++M  M=M            
+         =O,   M++M Z=N I+M M=MM+7= 7=N  M+7   :O           
+        ,      7M   O8  M+N M=M M+I.,++  :7$O    7+         
+              MO   I=   M+$ 8=8  O+M ++,   IO               
+             =M    $N  ,+M  ~=~  +M   7N    =N              
+                  ?O    OM   $    NM   M                    
+                  D    ~~    $    O     M                   
+                       ,     M     8                        
+                             7                              
+
+ simulate 6-month photographic exposure of Sun's path from a position on Earth
+ inspiration: http://helpmyphysics.co.uk/wordpress/?p=276
+ by way of: http://reddit.com/r/SomebodyMakeThis/comments/bqf2x/a_tool_to_create_sky_ring_graphs_based_on_data/
+
+ requires:
+	python programming language  ... http://python.org/
+	cairo graphics library       ... http://cairographics.org/
+	pycairo bindings             ... http://www.cairographics.org/pycairo/
+	pyephem astronomical package ... http://rhodesmill.org/pyephem/
