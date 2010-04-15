@@ -1,4 +1,3 @@
-
                         O    $    ~M                        
                    M   ,N    $   MO    O?                   
              N8    NM   M+: ~=~  M+N  ,$     =              
@@ -36,14 +35,15 @@ MM$$$============M=========++=O==========N============$$$MM7
                   D    ~~    $    O     M                   
                        ,     M     8                        
 
+Simulate 6-month photographic exposure of Sun's path from a position on Earth.
+Inspiration: http://helpmyphysics.co.uk/wordpress/?p=276
+  ...by way of http://reddit.com/r/SomebodyMakeThis/comments/bqf2x/a_tool_to_create_sky_ring_graphs_based_on_data/
 
+Example usage: ./sky-ring.py Edinburgh
 
- simulate 6-month photographic exposure of Sun's path from a position on Earth
- inspiration: http://helpmyphysics.co.uk/wordpress/?p=276
- by way of: http://reddit.com/r/SomebodyMakeThis/comments/bqf2x/a_tool_to_create_sky_ring_graphs_based_on_data/
-
- requires:
+requires:
 	python programming language  ... http://python.org/
 	cairo graphics library       ... http://cairographics.org/
 	pycairo bindings             ... http://www.cairographics.org/pycairo/
 	pyephem astronomical package ... http://rhodesmill.org/pyephem/
+
